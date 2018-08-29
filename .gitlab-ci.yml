@@ -1,0 +1,100 @@
+
+.tpl_install_npm: &npm_install
+  before_script:
+    - node -v && npm -v
+    - npm rebuild node-sass
+    - npm install --unsafe-perm --no-save
+
+
+
+
+
+cache:
+  key: "$CI_COMMIT_REF_NAME"
+  paths:
+    - node_modules/
+
+
+
+
+
+stages:
+  - test
+  - build
+
+  - staging_build
+  - staging_deploy
+
+
+
+
+
+lint_and_spec:
+  image: vmdev/base_node:chrome-alpine
+  stage: test
+  <<: *npm_install
+  script:
+    - npm run -s test.ci
+
+
+
+raw_build:
+  image: vmdev/base_node:chrome-alpine
+  stage: build
+  <<: *npm_install
+  script:
+    - npm run -s build
+
+
+
+# -----------------------------------------------------------------------------
+# demo site jobs
+
+build_job:
+  stage: staging_build
+  tags:
+    - deployer
+  script:
+    - echo $CI_PROJECT_NAME build start...
+    - pwd
+    - project.sh -n $CI_PROJECT_NAME -a build  -b $CI_BUILD_REF_NAME
+    - docker images | grep  $CI_PROJECT_NAME
+  when: manual
+
+.cbuild_job:
+  stage: staging_build
+  tags:
+    - deployer
+  script:
+    - echo $CI_PROJECT_NAME cachebuild start...
+    - project.sh -n $CI_PROJECT_NAME -a cachebuild  -b $CI_BUILD_REF_NAME
+    - docker images | grep  $CI_PROJECT_NAME
+  when: manual
+
+.qbuild_job:
+  stage: staging_build
+  tags:
+    - deployer
+  script:
+    - echo $CI_PROJECT_NAME quick build start...
+    - echo "CI_BUILD_REF_NAME = $CI_BUILD_REF_NAME"
+    - echo "CI_PROJECT_NAME   = $CI_PROJECT_NAME"
+    - echo "CI_COMMIT_SHA     = $CI_COMMIT_SHA"
+    - project.sh -n $CI_PROJECT_NAME -a qbuild -b $CI_BUILD_REF_NAME  -c "git checkout $CI_COMMIT_SHA"
+  when: manual
+
+deploy_job:
+  stage: staging_deploy
+  tags:
+    - deployer
+  environment:
+    name: $CI_BUILD_REF_NAME/$CI_PROJECT_NAME
+    url: http://vmdev--$CI_PROJECT_NAME--master.${CI_RUNNER_DESCRIPTION}.agent.hs-portal.eng.vmware.com
+  script:
+    - echo "deploy script..."
+    - project.sh -n $CI_PROJECT_NAME -a start -b $CI_BUILD_REF_NAME -d "${CI_RUNNER_DESCRIPTION}.agent.hs-portal.eng.vmware.com"
+    - sleep 5
+    - docker ps | grep  $CI_PROJECT_NAME
+  when: manual
+
+# -----------------------------------------------------------------------------

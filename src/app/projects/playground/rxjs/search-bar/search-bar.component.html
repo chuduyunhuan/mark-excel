@@ -1,0 +1,27 @@
+<main class="container">
+
+  <p>
+    <input type="text" size="25"
+      placeholder="search on Wikipedia"
+      [formControl]='typingCtrl'
+    >
+
+    <param class="spinner spinner-sm align-middle"
+      [hidden]="loading === false"
+    >
+  </p>
+
+  <ul class="suggestions list">
+    <li class="item" *ngFor="let item of hint$ | async">
+      <a [href]="item.link" target="_blank">
+        {{ item.title }}
+      </a>
+
+      <div class="summary">
+        {{ item.summary }}
+      </div>
+    </li>
+  </ul>
+
+</main>
+

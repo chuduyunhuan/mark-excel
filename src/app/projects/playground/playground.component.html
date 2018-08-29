@@ -1,0 +1,63 @@
+<clr-main-container>
+
+  <clr-header class="header">
+    <div class="branding">
+      <a class="nav-link" routerLink="/">
+        <clr-icon shape="vmw-app" class="is-solid"></clr-icon>
+        <span class="title">
+          <strong>vCloud Availability</strong>
+          <br>
+          <small>for Demo Playground</small>
+        </span>
+      </a>
+    </div>
+
+    <div class="header-nav">
+      <a routerLink="home" routerLinkActive="active" class="nav-link nav-text">Overview</a>
+      <a routerLink="rxjs" routerLinkActive="active" class="nav-link nav-text" hidden>RxJS</a>
+    </div>
+
+    <div class="header-actions">
+      <clr-dropdown>
+        <button class="nav-icon" clrDropdownTrigger>
+          <clr-icon shape="user"></clr-icon>
+          <clr-icon shape="caret down"></clr-icon>
+        </button>
+        <clr-dropdown-menu *clrIfOpen clrPosition="bottom-right">
+          <button (click)="this.vo.aboutOpen = true" clrDropdownItem>About</button>
+        </clr-dropdown-menu>
+      </clr-dropdown>
+
+    </div>
+
+  </clr-header>
+
+
+  <router-outlet></router-outlet>
+
+
+  <footer class="container text-right">
+    Powered by
+    <img src="assets/images/clarity-logo.svg" alt="Clarity Logo">
+  </footer>
+
+</clr-main-container>
+
+
+
+
+
+<clr-modal [(clrModalOpen)]="this.vo.aboutOpen" class="dialog about">
+  <h3 class="modal-title">About</h3>
+  <div class="modal-body">
+    <ul class="list-unstyled infos">
+      <li><strong class="labels">hash</strong>{{ this.info.hash }}
+      <li><strong class="labels">date</strong>{{ this.info.date | date: 'medium' }}
+      <li><strong class="labels">version</strong>{{ this.info.version }}
+    </ul>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn" (click)="this.vo.aboutOpen = false">Ok</button>
+  </div>
+</clr-modal>
+

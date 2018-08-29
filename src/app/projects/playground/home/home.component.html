@@ -1,0 +1,27 @@
+<main class="content-area custom-padding">
+
+  <clr-datagrid>
+
+    <clr-dg-column *ngFor="let col of this.cols"
+      [clrDgField]="col"
+    >
+      {{ col }}
+    </clr-dg-column>
+
+    <clr-dg-row *clrDgItems="let record of this.data">
+        <clr-dg-cell *ngFor="let col of this.cols">
+          {{ record[col] }}
+        </clr-dg-cell>
+    </clr-dg-row>
+
+    <clr-dg-footer>
+        <clr-dg-pagination #pagination [clrDgPageSize]="10">
+            {{ pagination.firstItem + 1 }} - {{ pagination.lastItem + 1 }}
+            of {{ pagination.totalItems }} records
+        </clr-dg-pagination>
+    </clr-dg-footer>
+
+  </clr-datagrid>
+
+</main>
+

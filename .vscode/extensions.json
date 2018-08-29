@@ -1,0 +1,11 @@
+
+{
+    "recommendations": [
+        "eg2.tslint",
+        "Angular.ng-template",
+        "EditorConfig.editorconfig",
+        "christian-kohler.path-intellisense",
+        "oderwat.indent-rainbow",
+        "CoenraadS.bracket-pair-colorizer"
+    ]
+}

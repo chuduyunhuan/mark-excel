@@ -1,0 +1,30 @@
+.header {
+  background-color: #4679b9;
+
+  .nav-link:visited {
+    color: #fff;
+  }
+
+  .branding {
+    .title {
+      line-height: initial;
+    }
+  }
+}
+
+
+.dialog {
+  &.about {
+    .infos .labels {
+      min-width: 5em;
+      display: inline-block;
+      text-align: right;
+
+      &:after {
+        content: ":";
+        padding-right: 1em;
+      }
+    }
+  }
+}
+

@@ -1,0 +1,23 @@
+# system
+
+.dockerignore
+
+/.git/
+
+
+
+# userland
+
+/.idea/
+/.vscode/
+
+node_modules/
+
+*.log
+
+/coverage/
+
+/dist/
+
+/e2e/
+
